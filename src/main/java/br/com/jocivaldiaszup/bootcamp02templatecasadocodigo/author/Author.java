@@ -41,7 +41,6 @@ public class Author implements Serializable {
         Assert.hasText(email, "Email can't be blank.");
         Assert.hasText(description, "Description can't be blank.");
         Assert.isTrue(description.length() <= 400, "Description size can't be greater than 400 characters.");
-        this.id = id;
         this.name = name;
         this.email = email;
         this.description = description;
