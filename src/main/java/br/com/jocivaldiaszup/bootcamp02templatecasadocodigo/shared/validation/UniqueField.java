@@ -1,5 +1,7 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation;
 
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.validator.UniqueFieldValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;

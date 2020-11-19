@@ -1,5 +1,6 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.book;
 
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.exception.ObjectNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,11 +9,12 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/book")
-// 4
+
 public class BookController {
 
     @PersistenceContext
@@ -29,7 +31,9 @@ public class BookController {
     }
 
     @GetMapping
+    //1
     public ResponseEntity<List<ListBookResponse>> findAll(){
+        //2
         List<Book> bookList = entityManager.createQuery("select b from Book b", Book.class).getResultList();
 
         List<ListBookResponse> listBookResponses = bookList.stream()
@@ -37,6 +41,18 @@ public class BookController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(listBookResponses);
+    }
+
+    @GetMapping(value = "/{id}")
+    //1
+    public ResponseEntity<?> bookDetails(@PathVariable(name = "id") Long bookId){
+        Optional<Book> book = Optional.ofNullable(entityManager.find(Book.class, bookId));
+        // 2
+        BookDetailResponse bookDetailResponse = BookDetailResponse.fromModel(book.orElseThrow( () -> {
+            throw new ObjectNotFoundException("Book " + bookId + " not found in database.");
+        }));
+
+        return ResponseEntity.ok(bookDetailResponse);
     }
 
 }

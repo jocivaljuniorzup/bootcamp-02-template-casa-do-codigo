@@ -1,5 +1,6 @@
-package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation;
+package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.validator;
 
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.ExistsId;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
@@ -9,7 +10,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-public class UniqueFieldValidator implements ConstraintValidator<UniqueField, Object> {
+public class ExistsIdValidator implements ConstraintValidator<ExistsId, Object> {
 
     private String fieldName;
     private Class<?> klass;
@@ -17,7 +18,7 @@ public class UniqueFieldValidator implements ConstraintValidator<UniqueField, Ob
     private EntityManager manager;
 
     @Override
-    public void initialize(UniqueField constraintAnnotation) {
+    public void initialize(ExistsId constraintAnnotation) {
         fieldName = constraintAnnotation.fieldName();
         klass = constraintAnnotation.domainClass();
     }
@@ -34,9 +35,9 @@ public class UniqueFieldValidator implements ConstraintValidator<UniqueField, Ob
         List<?> list = query.getResultList();
 
         Assert.isTrue(list.size() <= 1,
-                "Unique constraint violated for attribute "+ fieldName +" of class "+klass.getName()+".");
+                "Unique Id violated for attribute "+ fieldName +" of class "+klass.getName()+".");
 
-        return list.isEmpty();
+        return !list.isEmpty();
     }
 
 }
