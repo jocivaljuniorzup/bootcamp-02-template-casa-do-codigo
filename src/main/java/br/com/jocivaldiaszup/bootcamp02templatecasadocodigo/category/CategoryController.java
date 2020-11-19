@@ -13,6 +13,8 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/category")
+
+//4
 public class CategoryController {
 
     @PersistenceContext
@@ -20,7 +22,9 @@ public class CategoryController {
 
     @PostMapping
     @Transactional
+    //1
     public ResponseEntity<?> create(@RequestBody @Valid NewCategoryRequest newCategoryRequest){
+        // 3
         Category category = NewCategoryRequest.toModel(newCategoryRequest);
         entityManager.persist(category);
         return ResponseEntity.ok(NewCategoryResponse.fromModel(category));

@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/author")
+// 4 -> 3 classes minhas + 1 método
 public class AuthorController {
 
     @PersistenceContext
@@ -20,7 +21,9 @@ public class AuthorController {
 
     @PostMapping
     @Transactional
+    // 1
     public ResponseEntity<?> create(@RequestBody @Valid NewAuthorRequest newAuthorRequest){
+        // 3
         Author author = NewAuthorRequest.toModel(newAuthorRequest);
         entityManager.persist(author);
         return ResponseEntity.ok(NewAuthorResponse.fromModel(author));

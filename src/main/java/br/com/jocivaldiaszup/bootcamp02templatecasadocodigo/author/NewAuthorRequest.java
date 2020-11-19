@@ -28,6 +28,7 @@ public class NewAuthorRequest implements Serializable {
     public NewAuthorRequest() {
     }
 
+    // 1
     public NewAuthorRequest(@NotBlank @Email String email,
                             @NotBlank String name,
                             @NotBlank @Length(max = 400) String description) {
