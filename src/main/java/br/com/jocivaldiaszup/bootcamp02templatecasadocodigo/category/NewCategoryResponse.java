@@ -4,19 +4,33 @@ import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.Un
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class NewCategoryResponse {
 
-    @NotBlank(message = "{NotBlank}")
-    @UniqueField(fieldName = "name", domainClass = Category.class, message = "{unique.category.name}")
-    String name;
+    @NotNull
+    private Long id;
 
+    @NotBlank
+    @UniqueField(fieldName = "name", domainClass = Category.class, message = "{unique.category.name}")
+    private String name;
+
+    @Deprecated
     public NewCategoryResponse() {
     }
 
-    public NewCategoryResponse(@NotBlank String name) {
+    public NewCategoryResponse(@NotNull Long id,
+            @NotBlank String name) {
+
+        Assert.isTrue(id != null, "Id cant be null");
         Assert.hasText(name, "Name cant be blank");
+
+        this.id = id;
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -24,6 +38,6 @@ public class NewCategoryResponse {
     }
 
     public static NewCategoryResponse fromModel(Category category) {
-        return new NewCategoryResponse(category.getName());
+        return new NewCategoryResponse(category.getId(), category.getName());
     }
 }

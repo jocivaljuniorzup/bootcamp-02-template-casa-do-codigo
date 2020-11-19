@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 public class NewCategoryRequest {
 
-    @NotBlank(message = "{NotBlank}")
+    @NotBlank
     @UniqueField(fieldName = "name", domainClass = Category.class, message = "{unique.category.name}")
     String name;
 

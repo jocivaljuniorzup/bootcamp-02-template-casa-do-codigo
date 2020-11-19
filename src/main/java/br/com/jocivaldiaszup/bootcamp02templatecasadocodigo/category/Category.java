@@ -1,6 +1,5 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.category;
 
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ public class Category implements Serializable {
     private Long id;
 
     @Column(unique = true)
-    @NotBlank(message = "{NotBlank}")
+    @NotBlank
     private String name;
 
     @Deprecated

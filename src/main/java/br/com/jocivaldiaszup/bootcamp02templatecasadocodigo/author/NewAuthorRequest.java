@@ -12,15 +12,15 @@ import java.io.Serializable;
 public class NewAuthorRequest implements Serializable {
     private static final long serialVersionUID = 7407226838318371910L;
 
-    @NotBlank(message = "{NotBlank}")
-    @Email(message = "{Email}")
+    @NotBlank
+    @Email
     @UniqueField(domainClass = Author.class, fieldName = "email", message = "{unique.email}")
     private String email;
 
-    @NotBlank(message = "{NotBlank}")
+    @NotBlank
     private String name;
 
-    @NotBlank(message = "{NotBlank}")
+    @NotBlank
     @Size(max = 400, message = "{size.description}")
     private String description;
 

@@ -18,19 +18,19 @@ public class Author implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{NotBlank}")
+    @NotBlank
     private String name;
 
     @Column(unique = true)
-    @NotBlank(message = "{NotBlank}")
-    @Email(message = "{Email}")
+    @NotBlank
+    @Email
     private String email;
 
-    @NotBlank(message = "{NotBlank}")
+    @NotBlank
     @Size(max = 400, message = "{size.description}")
     private String description;
 
-    private LocalDateTime instant = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Deprecated
     public Author() {
@@ -62,18 +62,18 @@ public class Author implements Serializable {
         return description;
     }
 
-    public LocalDateTime getInstant() {
-        return instant;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override
     public String toString() {
-        return "Actor{" +
+        return "Author{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", description='" + description + '\'' +
-                ", instant=" + instant +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }
