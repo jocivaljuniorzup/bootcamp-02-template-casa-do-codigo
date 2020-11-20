@@ -1,6 +1,7 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.apache.tomcat.jni.Local;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -46,6 +47,10 @@ public class Coupon {
         this.code = code;
         this.discountPercentage = discountPercentage;
         this.expirationDate = expirationDate;
+    }
+
+    public boolean isValid() {
+        return LocalDate.now().isBefore(expirationDate);
     }
 
     public Long getId() {

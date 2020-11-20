@@ -2,7 +2,9 @@ package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.Country;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState;
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon.Coupon;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CpfCnpj;
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -69,6 +71,9 @@ public class Purchase implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     private PurchaseStatus status;
+
+    @ManyToOne
+    private Coupon coupon;
 
     @Deprecated
     public Purchase() {
@@ -147,6 +152,7 @@ public class Purchase implements Serializable {
         this.totalValue = purchaseBuilder.getTotalValue();
         this.purchaseItemSet = purchaseBuilder.getPurchaseItemSet();
         this.status = purchaseBuilder.getStatus();
+        this.coupon = purchaseBuilder.getCoupon();
     }
 
     public void validateTotal(){
@@ -155,6 +161,17 @@ public class Purchase implements Serializable {
                 .reduce(BigDecimal.ZERO, (subtotal, value) -> subtotal.add(value));
 
         Assert.isTrue(total.compareTo(this.totalValue) == 0, "Invalid Total");
+    }
+
+    public void applyCoupon() {
+        if(this.coupon != null) {
+            BigDecimal netValue = this.coupon.getDiscountPercentage()
+                    .divide(BigDecimal.valueOf(100l))
+                    .multiply(this.totalValue);
+            System.out.println(netValue);
+            this.totalValue = this.totalValue.subtract(netValue);
+            this.status = PurchaseStatus.COUPONAPPLIED;
+        }
     }
 
     public Long getId() {
@@ -203,6 +220,22 @@ public class Purchase implements Serializable {
 
     public String getZipCode() {
         return zipCode;
+    }
+
+    public BigDecimal getTotalValue() {
+        return totalValue;
+    }
+
+    public Set<PurchaseItem> getPurchaseItemSet() {
+        return purchaseItemSet;
+    }
+
+    public PurchaseStatus getStatus() {
+        return status;
+    }
+
+    public Coupon getCoupon() {
+        return coupon;
     }
 
     public void setCountryState(CountryState countryState) {

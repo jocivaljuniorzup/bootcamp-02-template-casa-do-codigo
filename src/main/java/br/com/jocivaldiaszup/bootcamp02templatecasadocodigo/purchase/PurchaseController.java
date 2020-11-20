@@ -27,6 +27,7 @@ public class PurchaseController {
         Purchase purchase = NewPurchaseRequest.toModel(newPurchaseRequest, entityManager);
         entityManager.persist(purchase);
         purchase.validateTotal();
+        purchase.applyCoupon();
 
         URI uri = uriComponentsBuilder.path("/order/{id}")
                 .buildAndExpand(purchase.getId())

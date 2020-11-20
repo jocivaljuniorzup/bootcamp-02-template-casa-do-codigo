@@ -2,6 +2,7 @@ package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.Country;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState;
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon.Coupon;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CpfCnpj;
 
 import javax.persistence.CollectionTable;
@@ -59,6 +60,8 @@ public class PurchaseBuilder {
 
     @NotNull
     private PurchaseStatus status;
+
+    private Coupon coupon;
 
     public PurchaseBuilder() {
     }
@@ -133,6 +136,11 @@ public class PurchaseBuilder {
         return this;
     }
 
+    public PurchaseBuilder setCoupon(Coupon coupon) {
+        this.coupon = coupon;
+        return this;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -187,6 +195,10 @@ public class PurchaseBuilder {
 
     public PurchaseStatus getStatus() {
         return status;
+    }
+
+    public Coupon getCoupon() {
+        return coupon;
     }
 
     public Purchase build(){

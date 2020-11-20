@@ -2,9 +2,11 @@ package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.Country;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState;
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon.Coupon;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CountryHasState;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CpfCnpj;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.ExistsId;
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
@@ -53,6 +55,9 @@ public class NewPurchaseRequest {
 
     @NotBlank
     private String zipCode;
+
+    @ExistsId(domainClass = Coupon.class, fieldName = "code", message = "Invalid coupon code")
+    private String couponCode;
 
     @NotNull
     @Valid
@@ -130,8 +135,16 @@ public class NewPurchaseRequest {
         return detail;
     }
 
+    public String getCouponCode() {
+        return couponCode;
+    }
+
     public void setCountryStateId(Long countryStateId) {
         this.countryStateId = countryStateId;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
     }
 
     public static Purchase toModel(NewPurchaseRequest newPurchaseRequest, EntityManager entityManager) {
@@ -142,6 +155,16 @@ public class NewPurchaseRequest {
         if(newPurchaseRequest.getCountryStateId() != null) {
             countryState = entityManager.find(CountryState.class, newPurchaseRequest.getCountryStateId());
             Assert.notNull(countryState, "The country state sent is not registered. Id: " + newPurchaseRequest.getCountryStateId());
+        }
+
+        Coupon coupon = null;
+        if(newPurchaseRequest.getCouponCode() != null) {
+            coupon = (Coupon) entityManager.createQuery("select t from Coupon t where t.code = :value", Coupon.class)
+                    .setParameter("value", newPurchaseRequest.getCouponCode())
+                    .getSingleResult();
+
+            Assert.notNull(coupon, "Invalid coupon code");
+            Assert.isTrue(coupon.isValid(), "Expired coupon");
         }
 
         Set<NewPurchaseItemRequest> newOrderItemsRequests = newPurchaseRequest.getDetail().getNewOrderItemsRequests();
@@ -165,6 +188,7 @@ public class NewPurchaseRequest {
                 .setTotalValue(newPurchaseRequest.getDetail().getTotalValue())
                 .setPurchaseItemSet(purchaseItemSet)
                 .setStatus(PurchaseStatus.OPENED)
+                .setCoupon(coupon)
                 .build();
 
         return purchase;
@@ -176,15 +200,16 @@ public class NewPurchaseRequest {
                 "email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", cpfCnpj='" + document + '\'' +
+                ", document='" + document + '\'' +
                 ", address='" + address + '\'' +
                 ", complement='" + complement + '\'' +
                 ", city='" + city + '\'' +
-                ", country=" + countryId +
-                ", countryState=" + countryStateId +
+                ", countryId=" + countryId +
+                ", countryStateId=" + countryStateId +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", zipCode='" + zipCode + '\'' +
-                ", newPurchaseDetailRequest=" + detail +
+                ", couponCode='" + couponCode + '\'' +
+                ", detail=" + detail +
                 '}';
     }
 }
