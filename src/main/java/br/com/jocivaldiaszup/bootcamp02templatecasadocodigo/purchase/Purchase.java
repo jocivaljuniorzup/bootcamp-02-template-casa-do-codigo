@@ -4,7 +4,6 @@ import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.Country;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon.Coupon;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CpfCnpj;
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -155,12 +154,15 @@ public class Purchase implements Serializable {
         this.coupon = purchaseBuilder.getCoupon();
     }
 
-    public void validateTotal(){
-        BigDecimal total = this.purchaseItemSet.stream()
+    public BigDecimal calculateTotalValue(){
+        return this.purchaseItemSet.stream()
                 .map(x -> x.getValue().multiply(BigDecimal.valueOf(x.getQuantity())))
                 .reduce(BigDecimal.ZERO, (subtotal, value) -> subtotal.add(value));
+    }
 
-        Assert.isTrue(total.compareTo(this.totalValue) == 0, "Invalid Total");
+    public boolean validateTotal(){
+        BigDecimal total = this.calculateTotalValue();
+        return total.compareTo(this.totalValue) == 0;
     }
 
     public void applyCoupon() {
@@ -168,7 +170,6 @@ public class Purchase implements Serializable {
             BigDecimal netValue = this.coupon.getDiscountPercentage()
                     .divide(BigDecimal.valueOf(100l))
                     .multiply(this.totalValue);
-            System.out.println(netValue);
             this.totalValue = this.totalValue.subtract(netValue);
             this.status = PurchaseStatus.COUPONAPPLIED;
         }
@@ -249,7 +250,7 @@ public class Purchase implements Serializable {
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", cpfCnpj='" + document + '\'' +
+                ", document='" + document + '\'' +
                 ", address='" + address + '\'' +
                 ", complement='" + complement + '\'' +
                 ", city='" + city + '\'' +
@@ -257,7 +258,10 @@ public class Purchase implements Serializable {
                 ", countryState=" + countryState +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", zipCode='" + zipCode + '\'' +
-//                ", orderDetail=" + orderDetail +
+                ", totalValue=" + totalValue +
+                ", purchaseItemSet=" + purchaseItemSet +
+                ", status=" + status +
+                ", coupon=" + coupon +
                 '}';
     }
 }

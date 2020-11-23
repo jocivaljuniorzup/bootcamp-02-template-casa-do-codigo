@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,7 +74,19 @@ public class NewPurchaseRequest {
                               @NotNull Long countryId,
                               @NotBlank String telephoneNumber,
                               @NotBlank String zipCode,
-                              @NotNull NewPurchaseDetailRequest detail) {
+                              @NotNull @Valid NewPurchaseDetailRequest detail) {
+
+        Assert.hasText(email, "Email cant be blank");
+        Assert.hasText(firstName, "First name cant be blank");
+        Assert.hasText(lastName, "Last name cant be blank");
+        Assert.hasText(document, "CPF/CNPJ cant be blank");
+        Assert.hasText(address, "Address cant be blank");
+        Assert.hasText(complement, "Complement cant be blank");
+        Assert.hasText(city, "City cant be blank");
+        Assert.notNull(countryId, "Country cant be null");
+        Assert.hasText(telephoneNumber, "Telephone Number cant be blank");
+        Assert.hasText(zipCode, "ZipCode cant be blank");
+
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -190,6 +203,9 @@ public class NewPurchaseRequest {
                 .setStatus(PurchaseStatus.OPENED)
                 .setCoupon(coupon)
                 .build();
+
+        Assert.isTrue(purchase.validateTotal(), "Invalid Total");
+        purchase.applyCoupon();
 
         return purchase;
     }

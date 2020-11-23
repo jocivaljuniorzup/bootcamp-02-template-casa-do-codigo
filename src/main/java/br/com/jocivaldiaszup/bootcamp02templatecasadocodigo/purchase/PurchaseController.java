@@ -1,10 +1,7 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityManager;
@@ -14,7 +11,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/order")
+@RequestMapping(value = "/purchase")
 public class PurchaseController {
 
     @PersistenceContext
@@ -26,14 +23,20 @@ public class PurchaseController {
                                     UriComponentsBuilder uriComponentsBuilder){
         Purchase purchase = NewPurchaseRequest.toModel(newPurchaseRequest, entityManager);
         entityManager.persist(purchase);
-        purchase.validateTotal();
-        purchase.applyCoupon();
 
-        URI uri = uriComponentsBuilder.path("/order/{id}")
+        URI uri = uriComponentsBuilder.path("/purchase/{id}")
                 .buildAndExpand(purchase.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable(name = "id") Long id){
+        Purchase purchase = entityManager.find(Purchase.class, id);
+        NewPurchaseResponse newPurchaseResponse = NewPurchaseResponse.fromModel(purchase);
+
+        return ResponseEntity.ok(newPurchaseResponse);
     }
 
 }

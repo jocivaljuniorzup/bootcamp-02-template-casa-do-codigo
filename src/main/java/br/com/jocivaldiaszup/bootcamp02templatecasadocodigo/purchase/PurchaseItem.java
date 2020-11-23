@@ -55,6 +55,10 @@ public class PurchaseItem {
         return value;
     }
 
+    public BigDecimal getTotalValue(){
+        return value.multiply(BigDecimal.valueOf(quantity));
+    }
+
     @Override
     public String toString() {
         return "PurchaseItem{" +
