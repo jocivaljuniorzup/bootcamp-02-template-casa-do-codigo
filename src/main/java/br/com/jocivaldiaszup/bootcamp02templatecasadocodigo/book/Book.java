@@ -72,8 +72,8 @@ public class Book implements Serializable {
 
         Assert.hasText(title, "Title cant be blank");
         Assert.hasText(bookAbstract, "Book abstract cant be blank");
-        Assert.isTrue(bookAbstract.length() <= 500, "Book abstract size can't be greater than 400 characters.");
-        Assert.isTrue(value.compareTo(BigDecimal.valueOf(20.00)) == 1, "Book value can't be lower than 20.00" );
+        Assert.isTrue(bookAbstract.length() <= 500, "Book abstract size can't be greater than 500 characters.");
+        Assert.isTrue(value.compareTo(BigDecimal.valueOf(20.00)) >= 0, "Book value can't be lower than 20.00" );
         Assert.isTrue(pages >= 100, "Book pages can't be lower than 100 pages.");
         Assert.hasText(isbn, "Book isbn cant be blank");
         Assert.notNull(category, "Book category cant be null");
@@ -94,7 +94,7 @@ public class Book implements Serializable {
         Assert.hasText(bookBuilder.getTitle(), "Title cant be blank");
         Assert.hasText(bookBuilder.getBookAbstract(), "Book abstract cant be blank");
         Assert.isTrue(bookBuilder.getBookAbstract().length() <= 500, "Book abstract size can't be greater than 400 characters.");
-        Assert.isTrue(bookBuilder.getValue().compareTo(BigDecimal.valueOf(20.00)) == 1, "Book value can't be lower than 20.00" );
+        Assert.isTrue(bookBuilder.getValue().compareTo(BigDecimal.valueOf(20.00)) >= 0, "Book value can't be lower than 20.00" );
         Assert.isTrue(bookBuilder.getPages() >= 100, "Book pages can't be lower than 100 pages.");
         Assert.hasText(bookBuilder.getIsbn(), "Book isbn cant be blank");
         Assert.notNull(bookBuilder.getCategory(), "Book category cant be null");

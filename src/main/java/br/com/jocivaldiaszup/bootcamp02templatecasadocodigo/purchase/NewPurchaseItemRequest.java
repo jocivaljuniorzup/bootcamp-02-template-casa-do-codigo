@@ -25,9 +25,6 @@ public class NewPurchaseItemRequest {
     public NewPurchaseItemRequest(@NotNull Long bookId,
                                   @NotNull @Min(value = 1) Integer quantity) {
 
-        Assert.notNull(bookId, "Book cant be null");
-        Assert.isTrue(quantity >= 1, "Book quantity should be greater or equal than 1");
-
         this.bookId = bookId;
         this.quantity = quantity;
     }

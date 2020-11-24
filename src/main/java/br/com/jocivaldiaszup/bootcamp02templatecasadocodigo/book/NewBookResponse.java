@@ -5,7 +5,6 @@ import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.category.Category;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.ExistsId;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.util.Assert;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -61,15 +60,6 @@ public class NewBookResponse {
                            @Future LocalDate publicationDate,
                            @NotNull Long categoryId,
                            @NotNull Long authorId) {
-
-        Assert.hasText(title, "Title cant be blank");
-        Assert.hasText(bookAbstract, "Book abstract cant be blank");
-        Assert.isTrue(bookAbstract.length() <= 500, "Book abstract size can't be greater than 400 characters.");
-        Assert.isTrue(value.compareTo(BigDecimal.valueOf(20.00)) == 1, "Book value can't be lower than 20.00" );
-        Assert.isTrue(pages >= 100, "Book pages can't be lower than 100 pages.");
-        Assert.hasText(isbn, "Book isbn cant be blank");
-        Assert.notNull(categoryId, "Book category cant be null");
-        Assert.notNull(authorId, "Book author cant be null");
 
         this.id = id;
         this.title = title;

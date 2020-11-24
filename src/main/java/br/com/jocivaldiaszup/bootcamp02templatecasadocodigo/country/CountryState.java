@@ -1,5 +1,7 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country;
 
+import org.springframework.util.Assert;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,10 @@ public class CountryState {
     }
 
     public CountryState(@NotBlank String name, @NotNull Country country) {
+
+        Assert.hasText(name, "Country state name cant be blank");
+        Assert.notNull(country, "Country cant be null");
+
         this.name = name;
         this.country = country;
     }

@@ -32,10 +32,7 @@ public class NewAuthorRequest implements Serializable {
     public NewAuthorRequest(@NotBlank @Email String email,
                             @NotBlank String name,
                             @NotBlank @Length(max = 400) String description) {
-        Assert.hasText(name, "Name can't be blank.");
-        Assert.hasText(email, "Email can't be blank.");
-        Assert.hasText(description, "Description can't be blank.");
-        Assert.isTrue(description.length() <= 400, "Description size can't be greater than 400 characters.");
+
         this.email = email;
         this.name = name;
         this.description = description;

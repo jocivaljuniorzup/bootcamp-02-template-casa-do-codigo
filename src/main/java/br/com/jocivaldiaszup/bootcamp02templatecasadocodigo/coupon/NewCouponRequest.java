@@ -33,12 +33,6 @@ public class NewCouponRequest {
                             @NotNull @Positive BigDecimal discountPercentage,
                             @Future LocalDate expirationDate) {
 
-        Assert.hasText(code, "Code cant be blank");
-        Assert.notNull(discountPercentage, "Discount percentage cant bet null");
-        Assert.isTrue(discountPercentage.compareTo(BigDecimal.ZERO) == 1,
-                "Discount percentage value should be greater than zero");
-        Assert.isTrue(LocalDate.now().isBefore(expirationDate), "Expiration date should be a future date");
-
         this.code = code;
         this.discountPercentage = discountPercentage;
         this.expirationDate = expirationDate;

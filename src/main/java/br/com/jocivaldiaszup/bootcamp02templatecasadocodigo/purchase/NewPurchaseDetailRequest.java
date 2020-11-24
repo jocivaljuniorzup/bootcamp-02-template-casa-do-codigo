@@ -24,9 +24,6 @@ public class NewPurchaseDetailRequest {
     public NewPurchaseDetailRequest(@NotNull @DecimalMin(value = "0.00", inclusive = false) BigDecimal totalValue,
                                     @NotNull @Size(min = 1) Set<NewPurchaseItemRequest> items) {
 
-        Assert.isTrue(totalValue.compareTo(BigDecimal.ZERO) == 1, "Total value should be greater than 0");
-        Assert.isTrue(items.size() >= 1, "You must add at least one item to the cart");
-
         this.totalValue = totalValue;
         this.items = items;
     }

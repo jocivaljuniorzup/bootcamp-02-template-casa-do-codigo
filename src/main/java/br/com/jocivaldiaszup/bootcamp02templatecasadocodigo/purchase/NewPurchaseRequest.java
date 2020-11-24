@@ -76,17 +76,6 @@ public class NewPurchaseRequest {
                               @NotBlank String zipCode,
                               @NotNull @Valid NewPurchaseDetailRequest detail) {
 
-        Assert.hasText(email, "Email cant be blank");
-        Assert.hasText(firstName, "First name cant be blank");
-        Assert.hasText(lastName, "Last name cant be blank");
-        Assert.hasText(document, "CPF/CNPJ cant be blank");
-        Assert.hasText(address, "Address cant be blank");
-        Assert.hasText(complement, "Complement cant be blank");
-        Assert.hasText(city, "City cant be blank");
-        Assert.notNull(countryId, "Country cant be null");
-        Assert.hasText(telephoneNumber, "Telephone Number cant be blank");
-        Assert.hasText(zipCode, "ZipCode cant be blank");
-
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -160,16 +149,20 @@ public class NewPurchaseRequest {
         this.couponCode = couponCode;
     }
 
+    //8
     public static Purchase toModel(NewPurchaseRequest newPurchaseRequest, EntityManager entityManager) {
+        //1
         Country country = entityManager.find(Country.class, newPurchaseRequest.getCountryId());
         Assert.notNull(country, "The country sent is not registered. Id: " + newPurchaseRequest.getCountryId());
 
+        //2
         CountryState countryState = null;
         if(newPurchaseRequest.getCountryStateId() != null) {
             countryState = entityManager.find(CountryState.class, newPurchaseRequest.getCountryStateId());
             Assert.notNull(countryState, "The country state sent is not registered. Id: " + newPurchaseRequest.getCountryStateId());
         }
 
+        //2
         Coupon coupon = null;
         if(newPurchaseRequest.getCouponCode() != null) {
             coupon = (Coupon) entityManager.createQuery("select t from Coupon t where t.code = :value", Coupon.class)
@@ -180,8 +173,10 @@ public class NewPurchaseRequest {
             Assert.isTrue(coupon.isValid(), "Expired coupon");
         }
 
+        //1
         Set<NewPurchaseItemRequest> newOrderItemsRequests = newPurchaseRequest.getDetail().getNewOrderItemsRequests();
 
+        //2
         Set<PurchaseItem> purchaseItemSet = newOrderItemsRequests.stream()
                 .map(x -> NewPurchaseItemRequest.toModel(x, entityManager))
                 .collect(Collectors.toSet());

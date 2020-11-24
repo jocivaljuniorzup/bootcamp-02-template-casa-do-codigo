@@ -1,7 +1,6 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.category;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
-import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,9 +20,6 @@ public class NewCategoryResponse {
 
     public NewCategoryResponse(@NotNull Long id,
             @NotBlank String name) {
-
-        Assert.isTrue(id != null, "Id cant be null");
-        Assert.hasText(name, "Name cant be blank");
 
         this.id = id;
         this.name = name;

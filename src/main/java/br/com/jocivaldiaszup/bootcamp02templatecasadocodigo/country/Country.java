@@ -1,5 +1,7 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country;
 
+import org.springframework.util.Assert;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -21,6 +23,9 @@ public class Country implements Serializable {
     }
 
     public Country(@NotBlank String name) {
+
+        Assert.hasText(name, "Country name cant be blank.");
+
         this.name = name;
     }
 

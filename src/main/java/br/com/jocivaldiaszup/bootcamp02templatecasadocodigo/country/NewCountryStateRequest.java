@@ -18,6 +18,11 @@ public class NewCountryStateRequest {
     @NotNull
     private Long countryId;
 
+    public NewCountryStateRequest(@NotBlank String name, @NotNull Long countryId) {
+        this.name = name;
+        this.countryId = countryId;
+    }
+
     public static CountryState toModel(NewCountryStateRequest newCountryStateRequest, EntityManager entityManager) {
         Country country = entityManager.find(Country.class, newCountryStateRequest.getCountryId());
 
