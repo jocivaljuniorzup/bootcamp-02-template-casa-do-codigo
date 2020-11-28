@@ -9,6 +9,7 @@ import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon.Coupon;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,10 +30,10 @@ public class PurchaseTest {
             .setPublicationDate(LocalDate.now().plusDays(1l))
             .setSummary("summary")
             .setTitle("title")
-            .setValue(BigDecimal.valueOf(500))
+            .setValue(BigDecimal.valueOf(100))
             .build();
 
-    Set<PurchaseItem> purchaseItemSet = new HashSet<PurchaseItem>(Set.of(new PurchaseItem(book, 1, BigDecimal.TEN)));
+    Set<PurchaseItem> purchaseItemSet = new HashSet<PurchaseItem>(Set.of(new PurchaseItem(book, 1, BigDecimal.valueOf(100))));
 
     PurchaseBuilder purchaseBuilder = new PurchaseBuilder()
             .setFirstName("firstname")
@@ -68,6 +69,31 @@ public class PurchaseTest {
     }
 
     @Test
-    void name() {
+    void givenValidPurchase_whenValidateTotal_thenReturnTrue() {
+        Purchase purchase = purchaseBuilder
+                .setCoupon(null)
+                .build();
+
+        BigDecimal expectedValue = BigDecimal.valueOf(100);
+
+        BigDecimal calculatedValue = purchase.calculateTotalValue();
+
+        Assertions.assertTrue(purchase.validateTotal());
+        Assertions.assertTrue(expectedValue.compareTo(calculatedValue) == 0);
+    }
+
+    @Test
+    void givenInvalidTotalValue_whenValidateTotal_thenReturnFalse(){
+        BigDecimal expectedValue = BigDecimal.valueOf(200);
+
+        Purchase purchase = purchaseBuilder
+                .setCoupon(null)
+                .setTotalValue(expectedValue)
+                .build();
+
+        BigDecimal calculatedValue = purchase.calculateTotalValue();
+
+        Assertions.assertFalse(purchase.validateTotal());
+        Assertions.assertFalse(expectedValue.compareTo(calculatedValue) == 0);
     }
 }
