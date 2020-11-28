@@ -1,6 +1,4 @@
-package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation;
-
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.validator.CountryHasStateValidator;
+package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

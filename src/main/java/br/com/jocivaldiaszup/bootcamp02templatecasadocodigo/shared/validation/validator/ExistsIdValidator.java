@@ -17,6 +17,10 @@ public class ExistsIdValidator implements ConstraintValidator<ExistsId, Object> 
     @PersistenceContext
     private EntityManager manager;
 
+    public ExistsIdValidator(EntityManager manager) {
+        this.manager = manager;
+    }
+
     @Override
     public void initialize(ExistsId constraintAnnotation) {
         fieldName = constraintAnnotation.fieldName();

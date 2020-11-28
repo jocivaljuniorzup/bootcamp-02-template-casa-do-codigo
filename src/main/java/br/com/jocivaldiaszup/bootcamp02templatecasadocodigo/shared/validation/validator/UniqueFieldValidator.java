@@ -17,6 +17,10 @@ public class UniqueFieldValidator implements ConstraintValidator<UniqueField, Ob
     @PersistenceContext
     private EntityManager manager;
 
+    public UniqueFieldValidator(EntityManager manager) {
+        this.manager = manager;
+    }
+
     @Override
     public void initialize(UniqueField constraintAnnotation) {
         fieldName = constraintAnnotation.fieldName();

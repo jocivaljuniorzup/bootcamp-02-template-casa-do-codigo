@@ -1,7 +1,7 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country;
 
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.ExistsId;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
-import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
@@ -16,6 +16,7 @@ public class NewCountryStateRequest {
     private String name;
 
     @NotNull
+    @ExistsId(fieldName = "id", domainClass = Country.class, message = "The country sent is not registered.")
     private Long countryId;
 
     public NewCountryStateRequest(@NotBlank String name, @NotNull Long countryId) {
@@ -25,8 +26,6 @@ public class NewCountryStateRequest {
 
     public static CountryState toModel(NewCountryStateRequest newCountryStateRequest, EntityManager entityManager) {
         Country country = entityManager.find(Country.class, newCountryStateRequest.getCountryId());
-
-        Assert.notNull(country, "The country sent is not registered. Id: " + newCountryStateRequest.getCountryId());
 
         return new CountryState(newCountryStateRequest.getName(), country);
     }

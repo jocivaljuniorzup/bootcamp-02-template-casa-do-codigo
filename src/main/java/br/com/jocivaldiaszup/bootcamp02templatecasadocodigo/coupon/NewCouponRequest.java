@@ -1,7 +1,6 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
-import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Future;

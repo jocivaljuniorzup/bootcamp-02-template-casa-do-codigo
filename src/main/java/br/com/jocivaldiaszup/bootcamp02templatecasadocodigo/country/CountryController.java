@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/country")
-public class CountryController {
+public class    CountryController {
 
     @PersistenceContext
     private EntityManager entityManager;

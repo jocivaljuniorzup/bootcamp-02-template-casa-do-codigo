@@ -78,49 +78,6 @@ public class Purchase implements Serializable {
     public Purchase() {
     }
 
-    public Purchase(@NotBlank @Email String email,
-                    @NotBlank String firstName,
-                    @NotBlank String lastName,
-                    @NotBlank String document,
-                    @NotBlank String address,
-                    @NotBlank String complement,
-                    @NotBlank String city,
-                    @NotNull Country country,
-                    @NotBlank String telephoneNumber,
-                    @NotBlank String zipCode,
-                    @NotNull @DecimalMin(value = "0.00", inclusive = false) BigDecimal totalValue,
-                    @NotNull @Size(min = 1) Set<PurchaseItem> purchaseItemSet,
-                    @NotBlank PurchaseStatus status) {
-
-        Assert.hasText(email, "Email cant be blank");
-        Assert.hasText(firstName, "First name cant be blank");
-        Assert.hasText(lastName, "Last name cant be blank");
-        Assert.hasText(document, "CPF/CNPJ cant be blank");
-        Assert.hasText(address, "Address cant be blank");
-        Assert.hasText(complement, "Complement cant be blank");
-        Assert.hasText(city, "City cant be blank");
-        Assert.notNull(country, "Country cant be null");
-        Assert.hasText(telephoneNumber, "Telephone Number cant be blank");
-        Assert.hasText(zipCode, "ZipCode cant be blank");
-        Assert.isTrue(totalValue.compareTo(BigDecimal.ZERO) == 1, "Total value should be greater than 0");
-        Assert.isTrue(purchaseItemSet.size() >= 1, "You must add at least one item to the cart");
-        Assert.notNull(status, "Status cant be null");
-
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.document = document;
-        this.address = address;
-        this.complement = complement;
-        this.city = city;
-        this.country = country;
-        this.telephoneNumber = telephoneNumber;
-        this.zipCode = zipCode;
-        this.totalValue = totalValue;
-        this.purchaseItemSet = purchaseItemSet;
-        this.status = status;
-    }
-
     public Purchase(PurchaseBuilder purchaseBuilder) {
 
         Assert.hasText(purchaseBuilder.getEmail(), "Email cant be blank");
@@ -133,8 +90,10 @@ public class Purchase implements Serializable {
         Assert.notNull(purchaseBuilder.getCountry(), "Country cant be null");
         Assert.hasText(purchaseBuilder.getTelephoneNumber(), "Telephone Number cant be blank");
         Assert.hasText(purchaseBuilder.getZipCode(), "ZipCode cant be blank");
-        Assert.isTrue(purchaseBuilder.getTotalValue().compareTo(BigDecimal.ZERO) == 1, "Total value should be greater than 0.");
-        Assert.isTrue(purchaseBuilder.getPurchaseItemSet().size() >= 1, "You must add at least one item to the cart.");
+        Assert.isTrue(purchaseBuilder.getTotalValue().compareTo(BigDecimal.ZERO) == 1,
+                "Total value should be greater than 0.");
+        Assert.isTrue(purchaseBuilder.getPurchaseItemSet().size() >= 1,
+                "You must add at least one item to the cart.");
         Assert.notNull(purchaseBuilder.getStatus(), "Status cant be null");
 
         this.email = purchaseBuilder.getEmail();
@@ -167,10 +126,10 @@ public class Purchase implements Serializable {
 
     public void applyCoupon() {
         if(this.coupon != null) {
-            BigDecimal netValue = this.coupon.getDiscountPercentage()
+            BigDecimal discount = this.coupon.getDiscountPercentage()
                     .divide(BigDecimal.valueOf(100l))
                     .multiply(this.totalValue);
-            this.totalValue = this.totalValue.subtract(netValue);
+            this.totalValue = this.totalValue.subtract(discount);
             this.status = PurchaseStatus.COUPONAPPLIED;
         }
     }

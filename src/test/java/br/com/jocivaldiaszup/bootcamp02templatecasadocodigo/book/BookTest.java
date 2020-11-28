@@ -32,6 +32,26 @@ public class BookTest {
     }
 
     @Test
+    public void givenInvalidBookTitle_whenInstantiate_thenThrowException(){
+        BookBuilder bookBuilder = new BookBuilder()
+                .setTitle("")
+                .setBookAbstract(TestUtil.generateString(500, "example"))
+                .setSummary("Example summary")
+                .setValue(BigDecimal.valueOf
+                        (20))
+                .setPages(100)
+                .setIsbn("123456789")
+                .setPublicationDate(LocalDate.now().plusDays(1))
+                .setAuthor(author)
+                .setCategory(category)
+                .setPages(100);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            bookBuilder.build();
+        });
+    }
+
+    @Test
     public void givenInvalidBookAbstract_whenInstantiate_thenThrowException(){
         BookBuilder bookBuilder = new BookBuilder()
                 .setTitle("Example title")
@@ -89,6 +109,67 @@ public class BookTest {
             bookBuilder.setPages(99).build();
         });
     }
+
+    @Test
+    public void givenInvalidBookIsbn_whenInstantiate_thenThrowException(){
+        BookBuilder bookBuilder = new BookBuilder()
+                .setTitle("Example title")
+                .setBookAbstract(TestUtil.generateString(500, "example"))
+                .setSummary("Example summary")
+                .setValue(BigDecimal.valueOf
+                        (20))
+                .setPages(100)
+                .setIsbn("")
+                .setPublicationDate(LocalDate.now().plusDays(1))
+                .setAuthor(author)
+                .setCategory(category)
+                .setPages(100);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            bookBuilder.build();
+        });
+    }
+
+    @Test
+    public void givenInvalidBookCategory_whenInstantiate_thenThrowException(){
+        BookBuilder bookBuilder = new BookBuilder()
+                .setTitle("Example title")
+                .setBookAbstract(TestUtil.generateString(500, "example"))
+                .setSummary("Example summary")
+                .setValue(BigDecimal.valueOf
+                        (20))
+                .setPages(100)
+                .setIsbn("123456")
+                .setPublicationDate(LocalDate.now().plusDays(1))
+                .setAuthor(author)
+                .setCategory(null)
+                .setPages(100);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            bookBuilder.build();
+        });
+    }
+
+    @Test
+    public void givenInvalidBookAuthor_whenInstantiate_thenThrowException(){
+        BookBuilder bookBuilder = new BookBuilder()
+                .setTitle("Example title")
+                .setBookAbstract(TestUtil.generateString(500, "example"))
+                .setSummary("Example summary")
+                .setValue(BigDecimal.valueOf
+                        (20))
+                .setPages(100)
+                .setIsbn("123456")
+                .setPublicationDate(LocalDate.now().plusDays(1))
+                .setAuthor(null)
+                .setCategory(category)
+                .setPages(100);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            bookBuilder.build();
+        });
+    }
+
 
 
 

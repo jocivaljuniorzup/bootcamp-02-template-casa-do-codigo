@@ -3,18 +3,17 @@ package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.Country;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon.Coupon;
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CountryHasState;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CpfCnpj;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.ExistsId;
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -153,13 +152,11 @@ public class NewPurchaseRequest {
     public static Purchase toModel(NewPurchaseRequest newPurchaseRequest, EntityManager entityManager) {
         //1
         Country country = entityManager.find(Country.class, newPurchaseRequest.getCountryId());
-        Assert.notNull(country, "The country sent is not registered. Id: " + newPurchaseRequest.getCountryId());
 
         //2
         CountryState countryState = null;
         if(newPurchaseRequest.getCountryStateId() != null) {
             countryState = entityManager.find(CountryState.class, newPurchaseRequest.getCountryStateId());
-            Assert.notNull(countryState, "The country state sent is not registered. Id: " + newPurchaseRequest.getCountryStateId());
         }
 
         //2
@@ -169,8 +166,9 @@ public class NewPurchaseRequest {
                     .setParameter("value", newPurchaseRequest.getCouponCode())
                     .getSingleResult();
 
-            Assert.notNull(coupon, "Invalid coupon code");
-            Assert.isTrue(coupon.isValid(), "Expired coupon");
+            if(!coupon.isValid()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Expired coupon");
+            }
         }
 
         //1

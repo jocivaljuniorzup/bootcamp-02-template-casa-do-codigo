@@ -5,7 +5,6 @@ import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.category.Category;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -58,36 +57,6 @@ public class Book implements Serializable {
 
     @Deprecated
     public Book() {
-    }
-
-    public Book(@NotBlank String title,
-                               @NotBlank @Size(max = 500, message = "{size.bookAbstract}") String bookAbstract,
-                               String summary,
-                               @DecimalMin(value = "20.00") BigDecimal value,
-                               @Min(value = 100) Integer pages,
-                               @NotBlank String isbn,
-                               @Future LocalDate publicationDate,
-                               @NotNull @Valid Category category,
-                               @NotNull @Valid Author author) {
-
-        Assert.hasText(title, "Title cant be blank");
-        Assert.hasText(bookAbstract, "Book abstract cant be blank");
-        Assert.isTrue(bookAbstract.length() <= 500, "Book abstract size can't be greater than 500 characters.");
-        Assert.isTrue(value.compareTo(BigDecimal.valueOf(20.00)) >= 0, "Book value can't be lower than 20.00" );
-        Assert.isTrue(pages >= 100, "Book pages can't be lower than 100 pages.");
-        Assert.hasText(isbn, "Book isbn cant be blank");
-        Assert.notNull(category, "Book category cant be null");
-        Assert.notNull(author, "Book author cant be null");
-
-        this.title = title;
-        this.bookAbstract = bookAbstract;
-        this.summary = summary;
-        this.value = value;
-        this.pages = pages;
-        this.isbn = isbn;
-        this.publicationDate = publicationDate;
-        this.category = category;
-        this.author = author;
     }
 
     public Book(BookBuilder bookBuilder){

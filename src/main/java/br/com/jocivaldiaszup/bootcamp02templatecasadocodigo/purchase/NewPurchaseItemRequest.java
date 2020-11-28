@@ -1,7 +1,7 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.book.Book;
-import org.springframework.util.Assert;
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.ExistsId;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
@@ -12,6 +12,7 @@ public class NewPurchaseItemRequest {
 
     @NotNull
     @ManyToOne(optional = false)
+    @ExistsId(fieldName = "id", domainClass = Book.class, message = "The book sent is not registered")
     private Long bookId;
 
     @NotNull
@@ -39,8 +40,6 @@ public class NewPurchaseItemRequest {
 
     public static PurchaseItem toModel(NewPurchaseItemRequest newPurchaseItemRequest, EntityManager entityManager) {
         Book book = entityManager.find(Book.class, newPurchaseItemRequest.getBookId());
-
-        Assert.notNull(book, "The book sent is not registered. Id: " + newPurchaseItemRequest.getBookId());
 
         return new PurchaseItem(book, newPurchaseItemRequest.getQuantity(), book.getValue());
     }

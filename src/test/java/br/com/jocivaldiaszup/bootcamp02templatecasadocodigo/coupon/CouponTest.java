@@ -15,6 +15,17 @@ public class CouponTest {
     }
 
     @Test
+    public void givenInvalidCouponCode_whenInstantiate_thenThrowException(){
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Coupon coupon = new Coupon("", BigDecimal.valueOf(20.5), LocalDate.now().plusDays(1l));
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Coupon coupon = new Coupon(null, BigDecimal.valueOf(20.5), LocalDate.now().plusDays(1l));
+        });
+    }
+
+    @Test
     public void givenInvalidCouponDiscount_whenInstantiate_thenThrowException(){
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             Coupon coupon = new Coupon("code", BigDecimal.valueOf(0), LocalDate.now().plusDays(1l));
@@ -24,4 +35,19 @@ public class CouponTest {
             Coupon coupon = new Coupon("code", BigDecimal.valueOf(-0.01), LocalDate.now().plusDays(1l));
         });
     }
+
+    @Test
+    public void givenInvalidCouponDate_whenInstantiate_thenThrowException(){
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Coupon coupon = new Coupon("code", BigDecimal.valueOf(20.5), LocalDate.now().plusDays(-1l));
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Coupon coupon = new Coupon("code", BigDecimal.valueOf(20.5), LocalDate.now().plusDays(0l));
+        });
+    }
+
+
+
+
 }

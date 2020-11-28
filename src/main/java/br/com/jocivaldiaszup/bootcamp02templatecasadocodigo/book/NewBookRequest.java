@@ -5,7 +5,6 @@ import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.category.Category;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.ExistsId;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.*;
@@ -111,9 +110,6 @@ public class NewBookRequest {
     public static Book toModel(NewBookRequest newBookRequest, EntityManager entityManager) {
         Category category = entityManager.find(Category.class, newBookRequest.getCategoryId());
         Author author = entityManager.find(Author.class, newBookRequest.getAuthorId());
-
-        Assert.notNull(category, "The category sent is not registered. Id: " + newBookRequest.getCategoryId());
-        Assert.notNull(author, "The author sent is not registered. Id: " + newBookRequest.getAuthorId());
 
         return new BookBuilder()
                 .setTitle(newBookRequest.getTitle())

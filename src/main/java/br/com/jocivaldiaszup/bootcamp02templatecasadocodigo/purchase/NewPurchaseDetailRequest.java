@@ -1,7 +1,5 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
-import org.springframework.util.Assert;
-
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;

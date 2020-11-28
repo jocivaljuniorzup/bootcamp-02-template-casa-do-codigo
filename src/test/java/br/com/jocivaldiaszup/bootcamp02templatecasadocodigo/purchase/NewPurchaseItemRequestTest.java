@@ -38,13 +38,5 @@ public class NewPurchaseItemRequestTest {
         Assertions.assertNotNull(purchaseItem);
     }
 
-    @Test
-    public void givenInvalidBook_whenToModel_thenThrowException(){
-        Mockito.when(entityManager.find(Book.class, 1l)).thenReturn(null);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            PurchaseItem purchaseItem = NewPurchaseItemRequest.toModel(newPurchaseItemRequest, entityManager);
-        });
-    }
 
 }

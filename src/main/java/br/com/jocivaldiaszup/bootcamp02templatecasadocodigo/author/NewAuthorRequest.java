@@ -2,7 +2,6 @@ package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.author;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.util.Assert;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

@@ -1,5 +1,6 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
+import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.exception.ObjectNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/purchase")
@@ -33,8 +35,11 @@ public class PurchaseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable(name = "id") Long id){
-        Purchase purchase = entityManager.find(Purchase.class, id);
-        NewPurchaseResponse newPurchaseResponse = NewPurchaseResponse.fromModel(purchase);
+        Optional<Purchase> purchase = Optional.ofNullable(entityManager.find(Purchase.class, id));
+
+        NewPurchaseResponse newPurchaseResponse = NewPurchaseResponse.fromModel(purchase.orElseThrow(() -> {
+            throw new ObjectNotFoundException("Purchase " + id +" not found");
+        }));
 
         return ResponseEntity.ok(newPurchaseResponse);
     }

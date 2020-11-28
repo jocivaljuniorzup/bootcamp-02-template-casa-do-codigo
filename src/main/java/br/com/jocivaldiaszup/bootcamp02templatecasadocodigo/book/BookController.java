@@ -17,8 +17,12 @@ import java.util.stream.Collectors;
 
 public class BookController {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+
+    private final EntityManager entityManager;
+
+    public BookController(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @PostMapping
     @Transactional

@@ -1,58 +1,44 @@
 package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.book;
 
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.UniqueField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class BookDetailResponse {
 
-    @NotNull
     private Long id;
 
-    @NotBlank
-    @UniqueField(domainClass = Book.class, fieldName = "title",message = "{unique.book.title}")
     private String title;
 
-    @NotBlank
-    @Size(max = 500, message = "{size.bookAbstract}")
     private String bookAbstract;
 
     private String summary;
 
-    @DecimalMin(value = "20.00", message = "{min.book.value}")
     private BigDecimal value;
 
-    @Min(value = 100, message = "{min.book.pages}")
     private Integer pages;
 
-    @NotBlank
-    @UniqueField(fieldName = "isbn", domainClass = Book.class, message = "{unique.book.isbn}")
     private String isbn;
 
-    @Future
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate publicationDate;
 
-    @NotNull
     private AuthorBookDetailResponse authorBookDetailResponse;
 
     @Deprecated
     public BookDetailResponse() {
     }
 
-    public BookDetailResponse(@NotNull Long id,
-                              @NotBlank String title,
-                              @NotBlank @Size(max = 500, message = "{size.bookAbstract}") String bookAbstract,
+    public BookDetailResponse(Long id,
+                              String title,
+                              String bookAbstract,
                               String summary,
-                              @DecimalMin(value = "20.00", message = "{min.book.value}") BigDecimal value,
-                              @Min(value = 100, message = "{min.book.pages}") Integer pages,
-                              @NotBlank String isbn,
-                              @Future LocalDate publicationDate,
-                              @NotNull @Valid AuthorBookDetailResponse authorBookDetailResponse) {
+                              BigDecimal value,
+                              Integer pages,
+                              String isbn,
+                              LocalDate publicationDate,
+                              AuthorBookDetailResponse authorBookDetailResponse) {
 
         this.id = id;
         this.title = title;

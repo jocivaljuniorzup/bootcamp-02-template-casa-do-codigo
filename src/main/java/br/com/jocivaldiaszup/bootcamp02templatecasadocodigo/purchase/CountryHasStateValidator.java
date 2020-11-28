@@ -1,10 +1,7 @@
-package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.validator;
+package br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase;
 
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.Country;
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState;
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.purchase.NewPurchaseRequest;
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.exception.FieldMessage;
-import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.shared.validation.CountryHasState;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

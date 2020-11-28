@@ -9,8 +9,8 @@ import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.country.CountryState
 import br.com.jocivaldiaszup.bootcamp02templatecasadocodigo.coupon.Coupon;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -104,38 +104,4 @@ public class NewPurchaseRequestTest {
         });
     }
 
-    @Test
-    void givenInvalidCountryStateNewPurchaseRequest_whenToModel_thenThrowException() {
-        Mockito.when(entityManager.find(Country.class, 1l)).thenReturn(country);
-        Mockito.when(entityManager.find(CountryState.class, 1l)).thenReturn(null);
-        Mockito.when(entityManager.find(Book.class, 1l)).thenReturn(book);
-
-        newPurchaseDetailRequest.getNewOrderItemsRequests().add(newPurchaseItemRequest);
-        newPurchaseRequest.setCountryStateId(1l);
-        newPurchaseRequest.setCouponCode(null);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            NewPurchaseRequest.toModel(newPurchaseRequest, entityManager);
-        });
-    }
-
-    @Test
-    void givenInvalidCouponNewPurchaseRequest_whenToModel_thenThrowException() {
-        Mockito.when(entityManager.find(Country.class, 1l)).thenReturn(country);
-        Mockito.when(entityManager.find(CountryState.class, 1l)).thenReturn(null);
-        Mockito.when(entityManager.find(Book.class, 1l)).thenReturn(book);
-
-        newPurchaseDetailRequest.getNewOrderItemsRequests().add(newPurchaseItemRequest);
-        newPurchaseRequest.setCountryStateId(1l);
-        newPurchaseRequest.setCouponCode("1234");
-
-        //Mock string query
-        Mockito.when(entityManager.createQuery("select t from Coupon t where t.code = :value", Coupon.class)).thenReturn(query);
-        Mockito.when(query.setParameter("value", "1234")).thenReturn(query);
-        Mockito.when(query.getSingleResult()).thenReturn(null);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            NewPurchaseRequest.toModel(newPurchaseRequest, entityManager);
-        });
-    }
 }
